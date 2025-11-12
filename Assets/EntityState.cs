@@ -6,26 +6,28 @@ using UnityEngine;
 public class EntityState
 {
     protected StateMachine stateMachine;
-    protected string stateName;
+    protected string animBoolName;
+    protected Player player;
 
-    public EntityState(StateMachine stateMachine, string stateName)
+    public EntityState(Player player, StateMachine stateMachine, string animBoolName)
     {
+        this.player = player;
         this.stateMachine = stateMachine;
-        this.stateName = stateName;
+        this.animBoolName = animBoolName;
     }
 
     public virtual void Entry()
     {
-        Debug.Log("Entry: " + stateName);
+        player.anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
     {
-        Debug.Log("Updata: " + stateName);
+        Debug.Log("Updata: " + animBoolName);
     }
 
     public virtual void Exit()
     {
-        Debug.Log("Exit: " + stateName);
+        player.anim.SetBool(animBoolName, false);
     }
 }
