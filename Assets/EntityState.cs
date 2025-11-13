@@ -23,7 +23,7 @@ public class EntityState
 
     public virtual void Update()
     {
-        Debug.Log("Updata: " + animBoolName);
+        player.anim.SetFloat("yVelocity", player.rb.velocity.y);
     }
 
     public virtual void Exit()

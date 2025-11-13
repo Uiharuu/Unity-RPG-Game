@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_State_Move : EntityState
+public class Player_State_Move : Player_State_Grounded
 {
     public Player_State_Move(Player player, StateMachine stateMachine, string stateName) : base(player, stateMachine, stateName)
     {

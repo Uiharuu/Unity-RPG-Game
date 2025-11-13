@@ -6,17 +6,27 @@ public class Player : MonoBehaviour
 {
     public Animator anim;
     public Rigidbody2D rb { get; private set; }
-    private PlayerInputSet input;
+    public PlayerInputSet input { get; private set; }
 
     private StateMachine stateMachine;
 
     public Player_State_Idle idleState { get; private set; }
     public Player_State_Move moveState { get; private set; }
+
+    public Player_State_Jump jumpState { get; private set; }
+    public Player_State_Fall fallState { get; private set; }
+
     public Vector2 moveInput { get; private set; }
 
     [Header("Movement Settings")]
-    public float moveSpeed = 8;
+    public float moveSpeed = 6;
+    public float jumpForce = 12;
     private bool facingRight = true;
+
+    [Header("Collision Detection")]
+    [SerializeField] float groundCheckDistance = 1.35f;
+    [SerializeField] LayerMask whatIsGround;
+    public bool groundedCheck;
 
     private void Awake()
     {
@@ -27,7 +37,8 @@ public class Player : MonoBehaviour
         stateMachine = new StateMachine();
         idleState = new Player_State_Idle(this, stateMachine, "idle");
         moveState = new Player_State_Move(this, stateMachine, "move");
-
+        jumpState = new Player_State_Jump(this, stateMachine, "jumpFall");
+        fallState = new Player_State_Fall(this, stateMachine, "jumpFall");
     }
 
     private void OnEnable()
@@ -52,6 +63,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        HandleCollisionDetaction();
         stateMachine.UpdateActive();
     }
 
@@ -69,9 +81,19 @@ public class Player : MonoBehaviour
         else if (!facingRight && xVelocity > 0)
             Flip();
     }
+    private void HandleCollisionDetaction()
+    {
+        groundedCheck = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+    }
+
     private void Flip()
     {
         transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance));
     }
 }
