@@ -62,12 +62,14 @@
   <ItemGroup>
     <Compile Include="Assets\Player_State_Grounded.cs" />
     <Compile Include="Assets\StateMachine.cs" />
+    <Compile Include="Assets\Player_State_WallSlide.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\InputSystem\PlayerInputSet.cs" />
     <Compile Include="Assets\Player_State_Fall.cs" />
     <Compile Include="Assets\Player_State_Idle.cs" />
     <Compile Include="Assets\EntityState.cs" />
     <Compile Include="Assets\Player_State_Jump.cs" />
+    <Compile Include="Assets\Player_State_WallJump.cs" />
     <Compile Include="Assets\Player_State_Move.cs" />
     <Compile Include="Assets\Player_State_Aired.cs" />
   </ItemGroup>

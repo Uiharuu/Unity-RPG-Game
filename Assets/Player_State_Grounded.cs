@@ -11,10 +11,12 @@ public class Player_State_Grounded : EntityState
     public override void Update()
     {
         base.Update();
-        if (player.rb.velocity.y < 0)
+        if (player.rb.velocity.y < 0 && !player.groundedCheck)
             stateMachine.ChangeState(player.fallState);
 
         if (player.input.Player.Jump.WasPressedThisFrame())
             stateMachine.ChangeState(player.jumpState);
+
+
     }
 }

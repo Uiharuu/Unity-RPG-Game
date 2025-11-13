@@ -15,5 +15,8 @@ public class Player_State_Aired : EntityState
 
         if (player.moveInput.x != 0)
             player.SetVelocity(player.moveInput.x * player.moveSpeed, player.rb.velocity.y);
+
+        if (player.wallCheck)
+            stateMachine.ChangeState(player.wallSlideState);
     }
 }
