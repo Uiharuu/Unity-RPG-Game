@@ -65,6 +65,7 @@
     <Compile Include="Assets\Player_State_WallSlide.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\InputSystem\PlayerInputSet.cs" />
+    <Compile Include="Assets\Player_State_Dash.cs" />
     <Compile Include="Assets\Player_State_Fall.cs" />
     <Compile Include="Assets\Player_State_Idle.cs" />
     <Compile Include="Assets\EntityState.cs" />

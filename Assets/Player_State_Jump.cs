@@ -19,7 +19,11 @@ public class Player_State_Jump : Player_State_Aired
     {
         base.Update();
 
-        if (player.rb.velocity.y < 0)
+        player.SetVelocity(player.moveInput.x * player.moveSpeed, player.rb.velocity.y);            
+
+        if (player.wallCheck)
+            stateMachine.ChangeState(player.wallSlideState);
+        else if (player.rb.velocity.y < 0)
             stateMachine.ChangeState(player.fallState);
     }
 }

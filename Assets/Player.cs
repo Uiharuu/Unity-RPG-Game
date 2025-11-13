@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     public Player_State_Jump jumpState { get; private set; }
     public Player_State_Fall fallState { get; private set; }
     public Player_State_WallJump wallJump { get; private set; }
-
     public Player_State_WallSlide wallSlideState { get; private set; }
+    public Player_State_Dash dashState { get; private set; }
 
     public Vector2 moveInput { get; private set; }
 
@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
     public int facingDir { get; private set; } = 1;
     public Vector2 wallJumpForce = new Vector2(6, 12);
+    public float dashDuration { get; private set; } = .25f;
+    public float dashSpeed { get; private set; } = 20f;
+    [SerializeField] public float wallJumpDuration = .4f;
 
     [Header("Collision Detection")]
     [SerializeField] float groundCheckDistance = 1.35f;
@@ -49,6 +52,7 @@ public class Player : MonoBehaviour
         fallState = new Player_State_Fall(this, stateMachine, "jumpFall");
         wallSlideState = new Player_State_WallSlide(this, stateMachine, "wallSlide");
         wallJump = new Player_State_WallJump(this, stateMachine, "jumpFall");
+        dashState = new Player_State_Dash(this, stateMachine, "dash");
     }
 
     private void OnEnable()
@@ -95,7 +99,7 @@ public class Player : MonoBehaviour
         wallCheck = Physics2D.Raycast(transform.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
     }
 
-    private void Flip()
+    public void Flip()
     {
         transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
