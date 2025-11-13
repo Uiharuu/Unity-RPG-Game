@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\Player_State_Grounded.cs" />
     <Compile Include="Assets\StateMachine.cs" />
+    <Compile Include="Assets\Player_AnimationTrigger.cs" />
     <Compile Include="Assets\Player_State_WallSlide.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\InputSystem\PlayerInputSet.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Assets\Player_State_Jump.cs" />
     <Compile Include="Assets\Player_State_WallJump.cs" />
     <Compile Include="Assets\Player_State_Move.cs" />
+    <Compile Include="Assets\Player_State_BasicAttack.cs" />
     <Compile Include="Assets\Player_State_Aired.cs" />
   </ItemGroup>
   <ItemGroup>

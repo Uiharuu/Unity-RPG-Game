@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public Player_State_WallJump wallJump { get; private set; }
     public Player_State_WallSlide wallSlideState { get; private set; }
     public Player_State_Dash dashState { get; private set; }
+    public Player_State_BasicAttack basicAttackState { get; private set; }
 
     public Vector2 moveInput { get; private set; }
 
@@ -37,6 +38,9 @@ public class Player : MonoBehaviour
     public bool groundedCheck;
     public bool wallCheck;
 
+    [Header("Attack Settings")]
+    public Vector2 attackMove;
+    public float attackDuration = .2f;
 
     public float wallSlideFallMultiper = .4f;
     private void Awake()
@@ -53,6 +57,7 @@ public class Player : MonoBehaviour
         wallSlideState = new Player_State_WallSlide(this, stateMachine, "wallSlide");
         wallJump = new Player_State_WallJump(this, stateMachine, "jumpFall");
         dashState = new Player_State_Dash(this, stateMachine, "dash");
+        basicAttackState = new Player_State_BasicAttack(this, stateMachine, "basicAttack");
     }
 
     private void OnEnable()

@@ -9,6 +9,7 @@ public class EntityState
     protected string animBoolName;
     protected Player player;
     protected float stateTimer;
+    protected bool stateTrigger;
 
     public EntityState(Player player, StateMachine stateMachine, string animBoolName)
     {
@@ -20,6 +21,7 @@ public class EntityState
     public virtual void Entry()
     {
         player.anim.SetBool(animBoolName, true);
+        stateTrigger = false;
     }
 
     public virtual void Update()
@@ -41,6 +43,11 @@ public class EntityState
             return false;
 
         return true;
+    }
+
+    public void DoTrigger()
+    {
+        stateTrigger = true; 
     }
 
 }
