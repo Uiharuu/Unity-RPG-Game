@@ -12,7 +12,7 @@ public class Player_State_Move : Player_State_Grounded
     {
         base.Update();
 
-        if (player.moveInput.x == 0)
+        if (player.moveInput.x == 0 || player.moveInput.x == player.facingDir && player.wallCheck)
             stateMachine.ChangeState(player.idleState);
 
         player.SetVelocity(player.moveInput.x * player.moveSpeed, player.rb.velocity.y);

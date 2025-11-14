@@ -68,6 +68,7 @@
     <Compile Include="Assets\InputSystem\PlayerInputSet.cs" />
     <Compile Include="Assets\Player_State_Dash.cs" />
     <Compile Include="Assets\Player_State_Fall.cs" />
+    <Compile Include="Assets\Player_State_JumpAttack.cs" />
     <Compile Include="Assets\Player_State_Idle.cs" />
     <Compile Include="Assets\EntityState.cs" />
     <Compile Include="Assets\Player_State_Jump.cs" />

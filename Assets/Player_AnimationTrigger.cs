@@ -14,7 +14,7 @@ public class Player_AnimationTrigger : MonoBehaviour
     {
         if (player != null)
         {
-            player.basicAttackState.DoTrigger();
+            player.stateMachine.currentState.DoTrigger();
         }
     }
 }

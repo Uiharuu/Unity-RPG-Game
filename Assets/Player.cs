@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public PlayerInputSet input { get; private set; }
 
-    private StateMachine stateMachine;
+    public StateMachine stateMachine;
 
     public Player_State_Idle idleState { get; private set; }
     public Player_State_Move moveState { get; private set; }
@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public Player_State_WallSlide wallSlideState { get; private set; }
     public Player_State_Dash dashState { get; private set; }
     public Player_State_BasicAttack basicAttackState { get; private set; }
+    public Player_State_JumpAttack jumpAttackState { get; private set; }
 
     public Vector2 moveInput { get; private set; }
 
@@ -29,18 +30,28 @@ public class Player : MonoBehaviour
     public Vector2 wallJumpForce = new Vector2(6, 12);
     public float dashDuration { get; private set; } = .25f;
     public float dashSpeed { get; private set; } = 20f;
-    [SerializeField] public float wallJumpDuration = .4f;
+    [SerializeField] public float wallJumpDuration = .2f;
 
     [Header("Collision Detection")]
     [SerializeField] float groundCheckDistance = 1.35f;
     [SerializeField] float wallCheckDistance = 0.45f;
+    [SerializeField] Transform headWallCheckPosition;
+    [SerializeField] Transform footWallCheckPosition;
     [SerializeField] LayerMask whatIsGround;
     public bool groundedCheck;
     public bool wallCheck;
 
     [Header("Attack Settings")]
-    public Vector2 attackMove;
-    public float attackDuration = .2f;
+    public Vector2[] attackMove = new Vector2[]
+    {
+        new Vector2(3, 1.5f),
+        new Vector2(1, 2.5f),
+        new Vector2(4, 5)
+    };
+    public float attackDuration = .1f;
+    public float comboAttackInterval = .5f;
+    public Coroutine enterAttackQueue;
+    public Vector2 jumpAttackVelocity = new Vector2(5, -6);
 
     public float wallSlideFallMultiper = .4f;
     private void Awake()
@@ -58,7 +69,11 @@ public class Player : MonoBehaviour
         wallJump = new Player_State_WallJump(this, stateMachine, "jumpFall");
         dashState = new Player_State_Dash(this, stateMachine, "dash");
         basicAttackState = new Player_State_BasicAttack(this, stateMachine, "basicAttack");
+        jumpAttackState = new Player_State_JumpAttack(this, stateMachine, "jumpAttack");
+
     }
+
+    
 
     private void OnEnable()
     {
@@ -76,6 +91,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         stateMachine.Init(idleState);
+
     }
 
     private void Update()
@@ -90,6 +106,18 @@ public class Player : MonoBehaviour
         HandleFlip(xVelocity);
     }
 
+    public void EnterAttackStateWithDelay()
+    {
+        if (enterAttackQueue != null)
+            StopCoroutine(enterAttackQueue);
+        StartCoroutine(EnterAttackStateWithDelayCo());
+    }
+    // 使用协程等待一帧， 确保animator的bool参数被正确重置
+    private IEnumerator EnterAttackStateWithDelayCo()
+    {
+        yield return new WaitForEndOfFrame();
+        stateMachine.ChangeState(basicAttackState);
+    }
 
     private void HandleFlip(float xVelocity)
     {
@@ -101,7 +129,8 @@ public class Player : MonoBehaviour
     private void HandleCollisionDetaction()
     {
         groundedCheck = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
-        wallCheck = Physics2D.Raycast(transform.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
+        wallCheck = Physics2D.Raycast(headWallCheckPosition.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround)
+                    && Physics2D.Raycast(footWallCheckPosition.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
     }
 
     public void Flip()
@@ -114,6 +143,7 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance));
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(wallCheckDistance * facingDir, 0));
+        Gizmos.DrawLine(headWallCheckPosition.position, headWallCheckPosition.position + new Vector3(wallCheckDistance * facingDir, 0));
+        Gizmos.DrawLine(footWallCheckPosition.position, footWallCheckPosition.position + new Vector3(wallCheckDistance * facingDir, 0));
     }
 }

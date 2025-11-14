@@ -23,7 +23,7 @@ public class Player_State_Jump : Player_State_Aired
 
         if (player.wallCheck)
             stateMachine.ChangeState(player.wallSlideState);
-        else if (player.rb.velocity.y < 0)
+        else if (player.rb.velocity.y < 0 && player.stateMachine.currentState != player.jumpAttackState)
             stateMachine.ChangeState(player.fallState);
     }
 }

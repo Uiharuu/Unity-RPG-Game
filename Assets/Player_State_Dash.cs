@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player_State_Dash : EntityState
 {
     private float originGravity;
+    private int dashDir;
     public Player_State_Dash(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
@@ -22,7 +23,7 @@ public class Player_State_Dash : EntityState
         if (player.wallCheck)
             player.Flip();
 
-        player.SetVelocity(player.rb.velocity.x, 0);
+        dashDir = player.moveInput.x != 0 ? (int)player.moveInput.x : player.facingDir;
 
     }
     public override void Update()
@@ -30,7 +31,7 @@ public class Player_State_Dash : EntityState
         base.Update();
 
 
-        player.SetVelocity(player.dashSpeed * player.facingDir, player.rb.velocity.y);
+        player.SetVelocity(player.dashSpeed * dashDir, 0);
 
         CancleDash();
 

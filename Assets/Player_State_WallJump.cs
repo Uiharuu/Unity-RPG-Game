@@ -23,11 +23,14 @@ public class Player_State_WallJump : EntityState
             player.SetVelocity(player.moveInput.x * player.moveSpeed, player.rb.velocity.y);
         }
 
+        if (player.input.Player.Attack.WasPressedThisFrame())
+            stateMachine.ChangeState(player.jumpAttackState);
+
         if (player.wallCheck)
         {
             stateMachine.ChangeState(player.wallSlideState);
         }
-        else if (player.rb.velocity.y < 0)
+        else if (player.rb.velocity.y < 0 && player.stateMachine.currentState != player.jumpAttackState)
         {
             stateMachine.ChangeState(player.fallState);
         }
